@@ -1,73 +1,61 @@
-document.addEventListener("DOMContentLoaded", () => {
-    const board = document.getElementById("board");
-    const cells = document.querySelectorAll(".cell");
-    const restartButton = document.getElementById("restartButton");
-    let currentPlayer = "X";
-    let gameState = Array(9).fill("");
-    let gameActive = true;
+body {
+    font-family: Arial, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    background: linear-gradient(to bottom, #E6E6FA, #008080); /* Gradient background */
+}
 
-    const winningConditions = [
-        [0, 1, 2],
-        [3, 4, 5],
-        [6, 7, 8],
-        [0, 3, 6],
-        [1, 4, 7],
-        [2, 5, 8],
-        [0, 4, 8],
-        [2, 4, 6],
-    ];
+.container {
+    text-align: center;
+}
 
-    function handleCellClick(e) {
-        const cell = e.target;
-        const cellIndex = cell.getAttribute("data-index");
+h1 {
+    margin-bottom: 20px;
+}
 
-        if (gameState[cellIndex] !== "" || !gameActive) {
-            return;
-        }
+.board {
+    display: grid;
+    grid-template-columns: repeat(3, 100px);
+    grid-template-rows: repeat(3, 100px);
+    gap: 5px;
+    justify-content: center;
+    margin-bottom: 20px;
+}
 
-        gameState[cellIndex] = currentPlayer;
-        cell.textContent = currentPlayer;
-        cell.classList.add(currentPlayer.toLowerCase()); // Add class for styling
+.cell {
+    width: 100px;
+    height: 100px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 2rem;
+    background-color: #fff;
+    border: 2px solid #000;
+    cursor: pointer;
+    border-radius: 10px; /* Curved corners */
+}
 
-        if (checkWinner()) {
-            alert(`Player ${currentPlayer} wins!`);
-            gameActive = false;
-            return;
-        }
+.cell:hover {
+    background-color: #f0e68c; /* Hover color */
+}
 
-        if (!gameState.includes("")) {
-            alert("It's a draw!");
-            gameActive = false;
-            return;
-        }
+.cell.x {
+    background-color: #228B22; /* Forest Green for player X */
+}
 
-        currentPlayer = currentPlayer === "X" ? "O" : "X";
-    }
+.cell.o {
+    background-color: #8A9A5B; /* Moss Green for player O */
+}
 
-    function checkWinner() {
-        for (let i = 0; i < winningConditions.length; i++) {
-            const [a, b, c] = winningConditions[i];
-            if (
-                gameState[a] &&
-                gameState[a] === gameState[b] &&
-                gameState[a] === gameState[c]
-            ) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    function restartGame() {
-        currentPlayer = "X";
-        gameState = Array(9).fill("");
-        cells.forEach(cell => {
-            cell.textContent = "";
-            cell.classList.remove("x", "o"); // Remove classes for styling
-        });
-        gameActive = true;
-    }
-
-    cells.forEach(cell => cell.addEventListener("click", handleCellClick));
-    restartButton.addEventListener("click", restartGame);
-});
+#restartButton {
+    padding: 10px 20px;
+    font-size: 1rem;
+    cursor: pointer;
+    background-color: #d3a297; /* Light maroon color for restart button */
+    color: white;
+    border: none;
+    border-radius: 5px;
+}
